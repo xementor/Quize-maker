@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>567566391464-lim2qdskldtt1frkf0i2kebt82rjd097.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.567566391464-lim2qdskldtt1frkf0i2kebt82rjd097</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>567566391464-2610qn8s1mghu5mboj8eje6sru63bgs4.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBJ4mKTywFIoR6J42fjKV6TPNNaJWGaSbI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>567566391464</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.medicineShop</string>
+	<key>PROJECT_ID</key>
+	<string>flutterquize</string>
+	<key>STORAGE_BUCKET</key>
+	<string>flutterquize.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:567566391464:ios:d80fb57fc7cb5442dcca9d</string>
+</dict>
+</plist>

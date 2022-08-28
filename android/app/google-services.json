@@ -1,0 +1,76 @@
+{
+  "project_info": {
+    "project_number": "567566391464",
+    "project_id": "flutterquize",
+    "storage_bucket": "flutterquize.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:567566391464:android:b39554f92f16c360dcca9d",
+        "android_client_info": {
+          "package_name": "com.example.medicine_shop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "567566391464-g5okrhhgvuqa9o77157v08lrgh85nasd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbjOnrSigs-silQe6XjzD7I56_R-E1OfM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "567566391464-g5okrhhgvuqa9o77157v08lrgh85nasd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:567566391464:android:a3d5f17774bd5ce2dcca9d",
+        "android_client_info": {
+          "package_name": "com.ih.quize"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "567566391464-2610qn8s1mghu5mboj8eje6sru63bgs4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ih.quize",
+            "certificate_hash": "cbfeaa7d58e4b2134e53ce38d88aea58c05a7f07"
+          }
+        },
+        {
+          "client_id": "567566391464-g5okrhhgvuqa9o77157v08lrgh85nasd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbjOnrSigs-silQe6XjzD7I56_R-E1OfM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "567566391464-g5okrhhgvuqa9o77157v08lrgh85nasd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
