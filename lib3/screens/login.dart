@@ -2,25 +2,8 @@ import 'package:flutter/material.dart';
 import '../shared/shared.dart';
 import '../services/services.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
-
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
+class LoginScreen extends StatelessWidget {
   AuthService auth = AuthService();
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    var user = auth.getUser;
-    if (user != null) {
-      Navigator.pushReplacementNamed(context, '/topics');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
             LoginButton(
               text: 'Login With Google',
               icon: Icons.facebook,
-              loginMethod: auth.signInWithGoogle,
+              loginMethod: auth.googleLogin,
               color: Colors.white54,
             ),
             LoginButton(
@@ -79,14 +62,17 @@ class LoginButton extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(bottom: 10),
       color: color,
-      child: IconButton(
-        onPressed: () async {
-          var user = await loginMethod();
-          if (user != null) {
-            Navigator.pushReplacementNamed(context, '/topics');
-          }
-        },
+      child: ElevatedButton.icon(
+        style: TextButton.styleFrom(
+          padding: const EdgeInsets.all(24),
+          backgroundColor: color,
+        ),
+        onPressed: () => loginMethod(),
         icon: Icon(icon, color: Colors.white),
+        label: Text(
+          text,
+          textAlign: TextAlign.center,
+        ),
       ),
     );
   }

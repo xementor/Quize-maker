@@ -1,60 +1,53 @@
-import 'package:flutter/material.dart';
-import 'package:medicine_shop/services/auth.dart';
-import 'screens/screens.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'services/auth.dart';
+import 'routes.dart';
+import 'services/services.dart';
+import 'shared/shared.dart';
+import 'theme.dart';
 
-Future<void> main() async {
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
-  runApp(MyApp());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const App());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class App extends StatefulWidget {
+  const App({super.key});
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        StreamProvider<User?>.value(
-          value: AuthService().userStream,
-          initialData: AuthService().getUser,
-        )
-      ],
-      child: MaterialApp(
-        navigatorObservers: [], //with flutter analytics],
+    return FutureBuilder(
+      // Initialize FlutterFire:
+      future: _initialization,
+      builder: (context, snapshot) {
+        // Check for errors
+        if (snapshot.hasError) {
+          // Error screen
+        }
 
-        routes: {
-          '/': (context) => LoginScreen(),
-          '/topics': (context) => TopicsScreen(),
-          '/profile': (context) => ProfileScreen(),
-          '/about': (context) => AboutScreen(),
-        },
+        // Once complete, show your application
+        if (snapshot.connectionState == ConnectionState.done) {
+          return StreamProvider(
+            create: (_) => FirestoreService().streamReport(),
+            catchError: (_, err) => Report(),
+            initialData: Report(),
+            child: MaterialApp(
+                debugShowCheckedModeBanner: true,
+                routes: appRoutes,
+                theme: appTheme),
+          );
+        }
 
-        // Theme:
-        theme: ThemeData(
-          fontFamily: 'Nunito',
-          bottomAppBarTheme: BottomAppBarTheme(
-            color: Colors.black87,
-          ),
-          brightness: Brightness.dark,
-          textTheme: TextTheme(
-            bodyText1: TextStyle(
-              fontSize: 18,
-            ),
-            bodyText2: TextStyle(fontSize: 16),
-            button: TextStyle(letterSpacing: 1.5, fontWeight: FontWeight.bold),
-            headline1: TextStyle(fontWeight: FontWeight.bold),
-            subtitle1: TextStyle(color: Colors.grey),
-          ),
-        ),
-      ),
+        // Otherwise, show something whilst waiting for initialization to complete
+        return const MaterialApp(home: LoadingScreen());
+      },
     );
   }
 }

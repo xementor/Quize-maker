@@ -1,47 +1,51 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
-
-FirebaseFirestore db = FirebaseFirestore.instance;
+import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+// import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AuthService {
-  final _db = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  User? get getUser => _auth.currentUser;
-  Stream<User?> get userStream => _auth.authStateChanges();
+  final userStream = FirebaseAuth.instance.authStateChanges();
+  final user = FirebaseAuth.instance.currentUser;
 
-  // Web signin
-  Future<UserCredential> signInWithGoogle() async {
-    // Create a new provider
-    GoogleAuthProvider googleProvider = GoogleAuthProvider();
-
-    googleProvider
-        .addScope('https://www.googleapis.com/auth/contacts.readonly');
-    // googleProvider.setCustomParameters({'login_hint': 'user@example.com'});
-
-    // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithPopup(googleProvider);
-
-    // Or use signInWithRedirect
-    // return await FirebaseAuth.instance.signInWithRedirect(googleProvider);
-  }
-
-  Future<void> anonLogin() async {
+  Future<void> googleLogin() async {
     try {
-      await _auth.signInAnonymously();
-    } on FirebaseAuthException {
-      // handle erro
-      print('something happen on anonLogin');
+      final googleUser = await GoogleSignIn().signIn();
+
+      if (googleUser == null) return;
+
+      final googleAuth = await googleUser.authentication;
+      final authCredential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      await FirebaseAuth.instance.signInWithCredential(authCredential);
+    } on FirebaseAuthException catch (_) {
+      // handle error
+    } on PlatformException catch (e) {
+      if (e.code == GoogleSignIn.kNetworkError) {
+        String errorMessage =
+            "A network error (such as timeout, interrupted connection or unreachable host) has occurred.";
+        // errorCallback(errorMessage);
+        print(errorMessage);
+      } else {
+        String errorMessage = "Something went wrong.";
+        print(errorMessage);
+      }
     }
   }
 
-  Future<void> singOut() async {
-    await _auth.signOut();
+  /// Anonymous Firebase login
+  Future<void> anonLogin() async {
+    try {
+      await FirebaseAuth.instance.signInAnonymously();
+    } on FirebaseAuthException {
+      // handle error
+    }
   }
 
-  Future<void> updateUserData(User user) async {
-    DocumentReference reportRef = _db.collection('reports').doc(user.uid);
-    return reportRef.set({'uid': user.uid, 'lastActivity': DateTime.now()},
-        SetOptions(merge: true));
+  Future<void> signOut() async {
+    await FirebaseAuth.instance.signOut();
   }
 }
