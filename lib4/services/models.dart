@@ -49,13 +49,12 @@ class Topic {
   final String img;
   final List<Quiz> quizzes;
 
-  Topic({
-    this.id = '',
-    this.title = '',
-    this.description = '',
-    this.img = 'firestore.png',
-    this.quizzes = const [],
-  });
+  Topic(
+      {this.id = '',
+      this.title = '',
+      this.description = '',
+      this.img = 'default.png',
+      this.quizzes = const []});
 
   factory Topic.fromJson(Map<String, dynamic> json) => _$TopicFromJson(json);
   Map<String, dynamic> toJson() => _$TopicToJson(this);

@@ -64,7 +64,6 @@ class TopicProgress extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Report report = Provider.of<Report>(context);
-    print(report);
     return Row(
       children: [
         _progressCount(report, topic),

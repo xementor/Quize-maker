@@ -11,9 +11,9 @@ class AuthService {
   Future<void> googleLogin() async {
     try {
       final googleUser = await GoogleSignIn().signIn();
-      print('before');
+
       if (googleUser == null) return;
-      print('after');
+
       final googleAuth = await googleUser.authentication;
       final authCredential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,

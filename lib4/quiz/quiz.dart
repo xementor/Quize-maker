@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import '../quiz/quiz_state.dart';
-import '../shared/shared.dart';
-
+import '../services/firestore.dart';
 import '../services/models.dart';
 import '../shared/loading.dart';
+import '../shared/progress_bar.dart';
 
 class QuizScreen extends StatelessWidget {
   const QuizScreen({super.key, required this.quizId});
@@ -13,49 +13,18 @@ class QuizScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var quiz = Quiz(
-      title: 'Title1',
-      topic: 'angular',
-      video: 'no videos',
-      description: 'descript1',
-      id: '1',
-      questions: [
-        Question(
-          options: [
-            Option(correct: false, detail: 'no details', value: 'a'),
-            Option(correct: true, detail: 'noo details', value: 'b'),
-          ],
-          text: 'text',
-        ),
-        Question(
-          options: [
-            Option(correct: false, detail: 'no details', value: 'a'),
-            Option(correct: true, detail: 'noo details', value: 'b'),
-          ],
-          text: 'text',
-        ),
-        Question(
-          options: [
-            Option(correct: false, detail: 'no details', value: 'a'),
-            Option(correct: true, detail: 'noo details', value: 'b'),
-          ],
-          text: 'text',
-        ),
-        Question(
-          options: [
-            Option(correct: false, detail: 'no details', value: 'a'),
-            Option(correct: true, detail: 'noo details', value: 'b'),
-          ],
-          text: 'text',
-        ),
-      ],
-    );
     return ChangeNotifierProvider(
-      create: ((context) => QuizState()),
-      child: FutureBuilder(
-          future: Future.value(true),
-          builder: (context, AsyncSnapshot<void> snap) {
-            var state = Provider.of<QuizState>(context);
+      create: (_) => QuizState(),
+      child: FutureBuilder<Quiz>(
+        future: FirestoreService().getQuiz(quizId),
+        builder: (context, snapshot) {
+          var state = Provider.of<QuizState>(context);
+
+          if (!snapshot.hasData || snapshot.hasError) {
+            return const Loader();
+          } else {
+            var quiz = snapshot.data!;
+
             return Scaffold(
               appBar: AppBar(
                 title: AnimatedProgressbar(value: state.progress),
@@ -81,69 +50,7 @@ class QuizScreen extends StatelessWidget {
                 },
               ),
             );
-          }),
-    );
-  }
-}
-
-class PracticeQuizeScreen extends StatelessWidget {
-  const PracticeQuizeScreen({super.key, required quizId});
-
-  @override
-  Widget build(BuildContext context) {
-    var quiz = Quiz(
-      title: 'Title1',
-      topic: 'angular',
-      video: 'no videos',
-      description: 'descript1',
-      id: '1',
-      questions: [
-        Question(
-          options: [
-            Option(correct: false, detail: 'no details', value: 'a'),
-            Option(correct: true, detail: 'noo details', value: 'b'),
-          ],
-          text: 'text',
-        ),
-        Question(
-          options: [
-            Option(correct: false, detail: 'no details', value: 'a'),
-            Option(correct: true, detail: 'noo details', value: 'b'),
-          ],
-          text: 'text',
-        ),
-        Question(
-          options: [
-            Option(correct: false, detail: 'no details', value: 'a'),
-            Option(correct: true, detail: 'noo details', value: 'b'),
-          ],
-          text: 'text',
-        ),
-        Question(
-          options: [
-            Option(correct: false, detail: 'no details', value: 'a'),
-            Option(correct: true, detail: 'noo details', value: 'b'),
-          ],
-          text: 'text',
-        ),
-      ],
-    );
-    return Scaffold(
-      appBar: AppBar(
-        title: AnimatedProgressbar(value: 100.0),
-        leading: IconButton(
-          icon: const Icon(FontAwesomeIcons.xmark),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-      body: PageView.builder(
-        // physics: const NeverScrollableScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        // controller: state.controller,
-        onPageChanged: (int idx) {},
-        // state.progress = (idx / (quiz.questions.length + 1)),
-        itemBuilder: (BuildContext context, int idx) {
-          return QuestionPage(question: quiz.questions[idx]);
+          }
         },
       ),
     );
@@ -207,7 +114,7 @@ class CongratsPage extends StatelessWidget {
             icon: const Icon(FontAwesomeIcons.check),
             label: const Text(' Mark Complete!'),
             onPressed: () {
-              // FirestoreService().updateUserReport(quiz);
+              FirestoreService().updateUserReport(quiz);
               Navigator.pushNamedAndRemoveUntil(
                 context,
                 '/topics',

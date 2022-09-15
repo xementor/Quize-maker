@@ -1,13 +1,18 @@
+import 'package:medicine_shop/create/create_topic.dart';
+
+import 'widgets/widgets.dart';
+import 'topics/topics.dart';
+import 'login/login.dart';
 import 'about/about.dart';
 import 'profile/profile.dart';
-import 'login/login.dart';
-import 'topics/topics.dart';
-import 'home/home.dart';
+import 'create/create.dart';
 
 var appRoutes = {
-  '/': (context) => const HomeScreen(),
-  '/login': (context) => const LoginScreen(),
-  '/topics': (context) => const TopicsScreen(),
-  '/profile': (context) => const ProfileScreen(),
-  '/about': (context) => const AboutScreen(),
+  '/': (context) => HomeScreen(),
+  '/login': (context) => LoginScreen(),
+  '/topics': (context) => TopicsScreen(),
+  '/profile': (context) => ProfileScreen(),
+  '/about': (context) => AboutScreen(),
+  '/create': (context) => CreateScreen(),
+  '/createTopic': (context) => CreateTopic(),
 };

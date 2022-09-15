@@ -1,0 +1,1 @@
+export 'tinder-card.dart';

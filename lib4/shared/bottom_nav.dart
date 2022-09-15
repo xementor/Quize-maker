@@ -24,13 +24,6 @@ class BottomNavBar extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Icon(
-            FontAwesomeIcons.circlePlus,
-            size: 20,
-          ),
-          label: 'Create',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(
             FontAwesomeIcons.circleUser,
             size: 20,
           ),
@@ -47,9 +40,6 @@ class BottomNavBar extends StatelessWidget {
             Navigator.pushNamed(context, '/about');
             break;
           case 2:
-            Navigator.pushNamed(context, '/create');
-            break;
-          case 3:
             Navigator.pushNamed(context, '/profile');
             break;
         }

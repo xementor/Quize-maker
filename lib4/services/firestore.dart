@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rxdart/rxdart.dart';
 import '../services/auth.dart';
@@ -34,27 +33,6 @@ class FirestoreService {
         return Stream.fromIterable([Report()]);
       }
     });
-  }
-
-  Future<void> createTopic(Topic topic, String topic_id) {
-    var user = AuthService().user!;
-    var ref =
-        _db.collection('topics').doc(user.uid).collection('tp').doc(topic_id);
-
-    var data = topic.toJson();
-    ref.set(data, SetOptions(merge: false));
-    return Future(
-      () => null,
-    );
-  }
-
-  Future<List<Topic>> getUserTopic() async {
-    var user = AuthService().user!;
-    var ref = _db.collection('topics').doc(user.uid).collection('tp');
-    var snapshot = await ref.get();
-    var data = snapshot.docs.map((s) => s.data());
-    var topics = data.map((d) => Topic.fromJson(d));
-    return topics.toList();
   }
 
   /// Updates the current user's report document after completing quiz
