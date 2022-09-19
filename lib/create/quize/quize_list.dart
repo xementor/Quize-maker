@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:medicine_shop/create/question/create_question.dart';
+import 'package:medicine_shop/create/question/question.dart';
 import 'package:medicine_shop/widgets/home.dart';
+import 'package:provider/provider.dart';
 import '../../services/services.dart';
 import '../../shared/shared.dart';
 import '../../quiz/quize_badge.dart';
 
-class QuizList extends StatelessWidget {
+class UserQuizList extends StatelessWidget {
   final Topic topic;
-  const QuizList({super.key, required this.topic});
+  const UserQuizList({super.key, required this.topic});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +27,7 @@ class QuizList extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (BuildContext context) =>
                         // QuizScreen(quizId: quiz.id),
-                        HomeScreen(),
+                        QuestionHolder(quiz: quiz),
                   ),
                 );
               },

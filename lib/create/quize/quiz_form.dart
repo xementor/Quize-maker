@@ -57,20 +57,38 @@ class _CreateQuizeFormState extends State<CreateQuizeForm> {
                   return null;
                 }),
               ),
+              TextFormField(
+                controller: id_controller,
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.description),
+                  hintText: 'Give a quiz Id',
+                  labelText: 'quiz id',
+                ),
+                validator: ((value) {
+                  if (value != null && value.isEmpty) {
+                    return "Please enter text";
+                  }
+                  return null;
+                }),
+              ),
               Container(
                 padding: const EdgeInsets.only(left: 150.0, top: 40.0),
                 child: TextButton(
                   child: const Text('Submit'),
                   onPressed: () {
-                    Topic topic = Topic(
-                      description: description_controller.text,
-                      id: topic_id,
+                    Quiz quiz = Quiz(
                       title: title_controller.text,
+                      description: description_controller.text,
+                      topic: widget.topic.id,
+                      id: id_controller.text,
+                      video: 'nothings',
                     );
-
+                    print(quiz.id);
                     if (_formKey.currentState!.validate()) {
-                      FirestoreService().createTopic(topic, topic_id);
-                      Navigator.pushNamed(context, '/create');
+                      FirestoreService().updateUserTopic(widget.topic, quiz);
+                      FirestoreService().createUserQuiz(quiz);
+                      Navigator.pop(context);
+                      // Navigator.pushNamed(context, '/create');
                     }
                   },
                 ),

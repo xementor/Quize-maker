@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:medicine_shop/topics/drawer.dart';
 import '../../services/services.dart';
 import 'quiz_form.dart';
+import 'quize_list.dart';
 
 class CreateQuizeScreen extends StatelessWidget {
   late Topic topic;
@@ -14,12 +15,19 @@ class CreateQuizeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
-        children: [QuizList(topic: topic)],
+        children: [UserQuizList(topic: topic)],
       ),
       floatingActionButton: IconButton(
           icon: const Icon(Icons.add_circle),
           onPressed: () {
-            CreateQuizeForm(topic: topic);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CreateQuizeForm(
+                  topic: topic,
+                ),
+              ),
+            );
           }),
     );
   }

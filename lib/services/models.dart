@@ -47,7 +47,7 @@ class Topic {
   final String title;
   final String description;
   final String img;
-  final List<Quiz> quizzes;
+  late List<Quiz> quizzes;
 
   Topic({
     this.id = '',

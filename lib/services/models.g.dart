@@ -7,13 +7,13 @@ part of 'models.dart';
 // **************************************************************************
 
 Option _$OptionFromJson(Map<String, dynamic> json) => Option(
-      value: json['value'] as String? ?? '',
+      value: json['text'] as String? ?? '',
       detail: json['detail'] as String? ?? '',
       correct: json['correct'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$OptionToJson(Option instance) => <String, dynamic>{
-      'value': instance.value,
+      'text': instance.value,
       'detail': instance.detail,
       'correct': instance.correct,
     };
