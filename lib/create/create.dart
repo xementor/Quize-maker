@@ -14,7 +14,7 @@ class CreateScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Topic>>(
-        future: FirestoreService().getUserTopic(),
+        future: FirestoreService().getUserTopics(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return LoadingScreen();

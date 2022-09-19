@@ -17,6 +17,13 @@ class FirestoreService {
     return topics.toList();
   }
 
+  Future<List<Quiz>> getQuizzes(String topicId) async {
+    var topic = await getUserTopic(topicId);
+    var quizzess_ref = topic.quizzes;
+
+    return quizzess_ref;
+  }
+
   /// Retrieves a single quiz document
   Future<Quiz> getQuiz(String quizId) async {
     var ref = _db.collection('quizzes').doc(quizId);
@@ -61,7 +68,10 @@ class FirestoreService {
 
 // work in this method later now using create quize method
   Future<void> addQuestionsToUserQuiz(
-      String quiz_id, String text, List<Map<String, dynamic>> options) async {
+    String quiz_id,
+    String text,
+    List<Map<String, dynamic>> options,
+  ) async {
     var user = AuthService().user!;
     var ref = _db
         .collection('userQuizzes')
@@ -69,14 +79,6 @@ class FirestoreService {
         .collection('quizzes')
         .doc(quiz_id);
 
-    // print(questions_map.toString());
-
-    // questions_map.forEach((e) => print(e));
-
-    // var ds = {
-    //   'text': text,
-    //   'options': FieldValue.arrayUnion([options]),
-    // };
     var qs = {
       'text': text,
       'options': options,
@@ -133,13 +135,24 @@ class FirestoreService {
     ref.set(data, SetOptions(merge: true));
   }
 
-  Future<List<Topic>> getUserTopic() async {
+  Future<List<Topic>> getUserTopics() async {
     var user = AuthService().user!;
     var ref = _db.collection('Usertopics').doc(user.uid).collection('tp');
     var snapshot = await ref.get();
     var data = snapshot.docs.map((s) => s.data());
     var topics = data.map((d) => Topic.fromJson(d));
     return topics.toList();
+  }
+
+  Future<Topic> getUserTopic(String topicId) async {
+    var user = AuthService().user!;
+    var ref = _db
+        .collection('Usertopics')
+        .doc(user.uid)
+        .collection('tp')
+        .doc(topicId);
+    var snapshot = await ref.get();
+    return Topic.fromJson(snapshot.data() ?? {});
   }
 
   /// Updates the current user's report document after completing quiz
