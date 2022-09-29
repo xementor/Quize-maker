@@ -13,22 +13,24 @@ class CreateQuizeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [UserQuizList(topic: topic)],
-      ),
-      floatingActionButton: IconButton(
-          icon: const Icon(Icons.add_circle),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => CreateQuizeForm(
-                  topic: topic,
+    return FutureBuilder(builder: (context, snapshot) {
+      return Scaffold(
+        body: Column(
+          children: [UserQuizList(topic: topic)],
+        ),
+        floatingActionButton: IconButton(
+            icon: const Icon(Icons.add_circle),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CreateQuizeForm(
+                    topic: topic,
+                  ),
                 ),
-              ),
-            );
-          }),
-    );
+              );
+            }),
+      );
+    });
   }
 }
