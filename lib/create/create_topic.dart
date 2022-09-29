@@ -67,7 +67,7 @@ class _CreateTopicState extends State<CreateTopic> {
                     );
 
                     if (_formKey.currentState!.validate()) {
-                      FirestoreService().createTopic(topic, topic_id);
+                      FirestoreService().createTopic(topic);
                       Navigator.pushNamed(context, '/create');
                     }
                   },

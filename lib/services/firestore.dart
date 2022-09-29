@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:html';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:medicine_shop/create/quize/quize_list.dart';
 import 'package:rxdart/rxdart.dart';
 import '../services/auth.dart';
 import '../services/models.dart';
@@ -68,15 +70,6 @@ class FirestoreService {
         .doc(user.uid)
         .collection('quizzes')
         .doc(quiz_id);
-
-    // print(questions_map.toString());
-
-    // questions_map.forEach((e) => print(e));
-
-    // var ds = {
-    //   'text': text,
-    //   'options': FieldValue.arrayUnion([options]),
-    // };
     var qs = {
       'text': text,
       'options': options,
@@ -101,13 +94,13 @@ class FirestoreService {
     });
   }
 
-  Future<void> createTopic(Topic topic, String topic_id) async {
+  Future<void> createTopic(Topic topic) async {
     var user = AuthService().user!;
     var ref = _db
         .collection('Usertopics')
         .doc(user.uid)
         .collection('tp')
-        .doc(topic_id);
+        .doc(topic.id);
 
     var data = topic.toJson();
     ref.set(data, SetOptions(merge: false));
@@ -133,13 +126,32 @@ class FirestoreService {
     ref.set(data, SetOptions(merge: true));
   }
 
-  Future<List<Topic>> getUserTopic() async {
+  Stream<List<Topic>> getUserTopic() {
     var user = AuthService().user!;
     var ref = _db.collection('Usertopics').doc(user.uid).collection('tp');
-    var snapshot = await ref.get();
-    var data = snapshot.docs.map((s) => s.data());
-    var topics = data.map((d) => Topic.fromJson(d));
-    return topics.toList();
+    var snapshot = ref.snapshots();
+    var a = snapshot.map((event) => event.docs.map((e) => e.data()).toList());
+    var topics = a.map((event) => event.map((e) => Topic.fromJson(e)).toList());
+
+    return topics;
+  }
+
+  Stream<List<Map<String, dynamic>>> getUserQuizzes(String topicId) {
+    var user = AuthService().user!;
+    var ref = _db
+        .collection('Usertopics')
+        .doc(user.uid)
+        .collection('tp')
+        .doc(topicId);
+    var snapshot = ref.snapshots();
+    var data = snapshot.map((DocumentSnapshot documentSnapshot) =>
+        documentSnapshot.get('quizzes') as List<dynamic>);
+
+    var quizzess = data
+        .map((event) => event.map((e) => e as Map<String, dynamic>).toList());
+    // var quizzess = data.map((event) => event as Map<String, dynamic>);
+
+    return quizzess;
   }
 
   /// Updates the current user's report document after completing quiz
@@ -156,4 +168,11 @@ class FirestoreService {
 
     return ref.set(data, SetOptions(merge: true));
   }
+}
+
+class UserQuiz {
+  String id;
+  String title;
+  String description;
+  UserQuiz({this.id = '', this.title = '', this.description = ''});
 }
