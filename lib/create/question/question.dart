@@ -12,8 +12,8 @@ import 'package:provider/provider.dart';
 import '../../shared/loading.dart';
 
 class QuestionHolder extends StatefulWidget {
-  late Quiz quiz;
-  QuestionHolder({super.key, required this.quiz});
+  late String quizId;
+  QuestionHolder({super.key, required this.quizId});
 
   @override
   State<QuestionHolder> createState() => _QuestionHolderState();
@@ -25,7 +25,7 @@ class _QuestionHolderState extends State<QuestionHolder> {
     return ChangeNotifierProvider(
       create: (_) => QuestionState(),
       child: FutureBuilder<Quiz>(
-        future: FirestoreService().getUserQuiz(widget.quiz.id),
+        future: FirestoreService().getUserQuiz(widget.quizId),
         builder: (context, snapshot) {
           var state = Provider.of<QuestionState>(context);
           if (!snapshot.hasData || snapshot.hasError) {
@@ -38,7 +38,7 @@ class _QuestionHolderState extends State<QuestionHolder> {
                 controller: state.controller,
                 itemBuilder: (context, index) {
                   if (index >= quiz.questions.length) {
-                    return CreateQuestion(quiz: widget.quiz);
+                    return CreateQuestion(quizId: widget.quizId);
                   } else {
                     return QuestionPageScreen(question: quiz.questions[index]);
                   }

@@ -9,8 +9,8 @@ import 'package:medicine_shop/services/models.dart';
 import 'package:provider/provider.dart';
 
 class CreateQuestion extends StatefulWidget {
-  late Quiz quiz;
-  CreateQuestion({super.key, required this.quiz});
+  late String quizId;
+  CreateQuestion({super.key, required this.quizId});
 
   @override
   State<CreateQuestion> createState() => _CreateQuestionState();
@@ -91,7 +91,7 @@ class _CreateQuestionState extends State<CreateQuestion> {
                     };
                     options.add(option);
                   }
-                  String quiz_id = widget.quiz.id;
+                  String quiz_id = widget.quizId;
 
                   FirestoreService().addQuestionsToUserQuiz(
                       quiz_id, title_controller.text, options);

@@ -33,7 +33,7 @@ class UserQuizList extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (BuildContext context) =>
                                 // QuizScreen(quizId: quiz.id),
-                                QuestionHolder(quiz: quiz['id']),
+                                QuestionHolder(quizId: quiz['id']),
                           ),
                         );
                       },

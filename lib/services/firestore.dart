@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:html';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:medicine_shop/create/quize/quize_list.dart';
 import 'package:rxdart/rxdart.dart';
 import '../services/auth.dart';
 import '../services/models.dart';
