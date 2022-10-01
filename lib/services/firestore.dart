@@ -17,6 +17,14 @@ class FirestoreService {
     return topics.toList();
   }
 
+  Future<List<Topic>> getUserTopics() async {
+    var ref = _db.collection('Usertopics');
+    var snapshot = await ref.get();
+    var data = snapshot.docs.map((s) => s.data());
+    var topics = data.map((d) => Topic.fromJson(d));
+    return topics.toList();
+  }
+
   /// Retrieves a single quiz document
   Future<Quiz> getQuiz(String quizId) async {
     var ref = _db.collection('quizzes').doc(quizId);
@@ -104,6 +112,21 @@ class FirestoreService {
     ref.set(data, SetOptions(merge: false));
   }
 
+  Future<void> publishTheTopic(Topic topic) async {
+    var user = AuthService().user!;
+    var ref = _db
+        .collection('Usertopics')
+        .doc(user.uid)
+        .collection('tp')
+        .doc(topic.id);
+
+    Map<String, dynamic> data = {"isPublished": true};
+    ref.set(data, SetOptions(merge: true));
+    var newref = _db.collection("publishedTopic").doc(topic.id);
+    newref.set(
+        {'ref': ref, 'title': topic.title, 'description': topic.description});
+  }
+
   Future<void> updateUserTopic(Topic topic, Quiz quize) async {
     var user = AuthService().user!;
     var ref = _db
@@ -124,7 +147,7 @@ class FirestoreService {
     ref.set(data, SetOptions(merge: true));
   }
 
-  Stream<List<Topic>> getUserTopic() {
+  Stream<List<Topic>> getUserTopicStream() {
     var user = AuthService().user!;
     var ref = _db.collection('Usertopics').doc(user.uid).collection('tp');
     var snapshot = ref.snapshots();

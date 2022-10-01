@@ -1,3 +1,4 @@
+import 'package:flutter/rendering.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -55,7 +56,15 @@ class CreatedTopicItem extends StatelessWidget {
                     ),
                   ),
                 ),
-                Flexible(child: TopicProgress(topic: topic)),
+                topic.isPublished
+                    ? Container()
+                    : IconButton(
+                        onPressed: () {
+                          FirestoreService().publishTheTopic(topic);
+                          print('added');
+                        },
+                        icon: Icon(Icons.upload),
+                      )
               ],
             ),
           ),

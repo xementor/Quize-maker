@@ -61,6 +61,7 @@ Topic _$TopicFromJson(Map<String, dynamic> json) => Topic(
               ?.map((e) => Quiz.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      isPublished: json['isPublished'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$TopicToJson(Topic instance) => <String, dynamic>{
@@ -69,6 +70,7 @@ Map<String, dynamic> _$TopicToJson(Topic instance) => <String, dynamic>{
       'description': instance.description,
       'img': instance.img,
       'quizzes': instance.quizzes,
+      'isPublished': instance.isPublished,
     };
 
 Report _$ReportFromJson(Map<String, dynamic> json) => Report(

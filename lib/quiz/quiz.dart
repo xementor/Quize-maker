@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:medicine_shop/services/firestore.dart';
 import 'package:provider/provider.dart';
 import '../quiz/quiz_state.dart';
 import '../shared/shared.dart';
@@ -13,74 +14,42 @@ class QuizScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var quiz = Quiz(
-      title: 'Title1',
-      topic: 'angular',
-      video: 'no videos',
-      description: 'descript1',
-      id: '1',
-      questions: [
-        Question(
-          options: [
-            Option(correct: false, detail: 'no details', value: 'a'),
-            Option(correct: true, detail: 'noo details', value: 'b'),
-          ],
-          text: 'text',
-        ),
-        Question(
-          options: [
-            Option(correct: false, detail: 'no details', value: 'a'),
-            Option(correct: true, detail: 'noo details', value: 'b'),
-          ],
-          text: 'text',
-        ),
-        Question(
-          options: [
-            Option(correct: false, detail: 'no details', value: 'a'),
-            Option(correct: true, detail: 'noo details', value: 'b'),
-          ],
-          text: 'text',
-        ),
-        Question(
-          options: [
-            Option(correct: false, detail: 'no details', value: 'a'),
-            Option(correct: true, detail: 'noo details', value: 'b'),
-          ],
-          text: 'text',
-        ),
-      ],
-    );
     return ChangeNotifierProvider(
-      create: ((context) => QuizState()),
-      child: FutureBuilder(
-          future: Future.value(true),
-          builder: (context, AsyncSnapshot<void> snap) {
+      create: (_) => QuizState(),
+      child: FutureBuilder<Quiz>(
+          future: FirestoreService().getQuiz(quizId),
+          builder: (context, snap) {
             var state = Provider.of<QuizState>(context);
-            return Scaffold(
-              appBar: AppBar(
-                title: AnimatedProgressbar(value: state.progress),
-                leading: IconButton(
-                  icon: const Icon(FontAwesomeIcons.xmark),
-                  onPressed: () => Navigator.pop(context),
+            if (!snap.hasData || snap.hasError) {
+              return const Loader();
+            } else {
+              var quiz = snap.data!;
+              return Scaffold(
+                appBar: AppBar(
+                  title: AnimatedProgressbar(value: state.progress),
+                  leading: IconButton(
+                    icon: const Icon(FontAwesomeIcons.xmark),
+                    onPressed: () => Navigator.pop(context),
+                  ),
                 ),
-              ),
-              body: PageView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                controller: state.controller,
-                onPageChanged: (int idx) =>
-                    state.progress = (idx / (quiz.questions.length + 1)),
-                itemBuilder: (BuildContext context, int idx) {
-                  if (idx == 0) {
-                    return StartPage(quiz: quiz);
-                  } else if (idx == quiz.questions.length + 1) {
-                    return CongratsPage(quiz: quiz);
-                  } else {
-                    return QuestionPage(question: quiz.questions[idx - 1]);
-                  }
-                },
-              ),
-            );
+                body: PageView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  controller: state.controller,
+                  onPageChanged: (int idx) =>
+                      state.progress = (idx / (quiz.questions.length + 1)),
+                  itemBuilder: (BuildContext context, int idx) {
+                    if (idx == 0) {
+                      return StartPage(quiz: quiz);
+                    } else if (idx == quiz.questions.length + 1) {
+                      return CongratsPage(quiz: quiz);
+                    } else {
+                      return QuestionPage(question: quiz.questions[idx - 1]);
+                    }
+                  },
+                ),
+              );
+            }
           }),
     );
   }

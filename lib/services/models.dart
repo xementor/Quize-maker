@@ -48,6 +48,7 @@ class Topic {
   final String description;
   final String img;
   late List<Quiz> quizzes;
+  late bool isPublished;
 
   Topic({
     this.id = '',
@@ -55,6 +56,7 @@ class Topic {
     this.description = '',
     this.img = 'firestore.png',
     this.quizzes = const [],
+    this.isPublished = false,
   });
 
   factory Topic.fromJson(Map<String, dynamic> json) => _$TopicFromJson(json);
